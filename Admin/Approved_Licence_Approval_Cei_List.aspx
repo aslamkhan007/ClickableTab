@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Admin/Admin_Master.Master" AutoEventWireup="true" CodeBehind="Approved_Licence_Approval_Cei_List.aspx.cs" Inherits="CEIHaryana.Admin.Approved_Licence_Approval_Cei_List" %>
-
+<%@ Register Src="~/UserCPages/LicenceTabsDashboard.ascx" TagPrefix="uc1" TagName="LicenceTabsDashboard" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="shortcut icon" type="image/png" href="/css2/style.min.css" />
     <link rel="stylesheet" href="/css2/style.css" />
@@ -119,7 +119,10 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="content-wrapper">
 
+                <uc1:LicenceTabsDashboard runat="server" ID="ucLicenceTabs"
+            OnTabSelected="ucLicenceTabs_TabSelected" />
         <div class="card" style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; border-radius: 5px !important">
+
             <div class="card-body">
                 <div class="row ">
                     <div class="col-sm-4 col-md-4">

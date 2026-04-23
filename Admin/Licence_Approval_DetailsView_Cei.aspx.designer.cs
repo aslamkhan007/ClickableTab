@@ -11,35 +11,35 @@ namespace CEIHaryana.Admin
 {
 
 
-    public partial class Approved_Licence_Approval_Cei_List
+    public partial class Licence_Approval_DetailsView_Cei
     {
 
         /// <summary>
-        /// ucLicenceTabs control.
+        /// ScriptManager1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::CEIHaryana.UserCPages.LicenceTabsDashboard ucLicenceTabs;
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
 
         /// <summary>
-        /// lblData control.
+        /// ucLicenceDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblData;
+        protected global::CEIHaryana.UserCPages.LicenceHeaderDetails ucLicenceDetails;
 
         /// <summary>
-        /// txtSearch control.
+        /// hdn_Lic_ApplicationId control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSearch;
+        protected global::System.Web.UI.WebControls.HiddenField hdn_Lic_ApplicationId;
 
         /// <summary>
         /// GridView1 control.
@@ -49,5 +49,14 @@ namespace CEIHaryana.Admin
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridView1;
+
+        /// <summary>
+        /// btnBack control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnBack;
     }
 }

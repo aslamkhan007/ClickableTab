@@ -21,54 +21,63 @@ namespace CEIHaryana.Admin
             {
                 if (!IsPostBack)
                 {
-                    if (Convert.ToString(Session["AdminId"]) != null || Convert.ToString(Session["AdminId"]) != string.Empty)
+                    if (Convert.ToString(Session["AdminId"]) != null && Convert.ToString(Session["AdminId"]) != string.Empty)
                     {
+                        LoadTabCounts();
                         GridBind();
                     }
                     else
                     {
-                        Session["AdminId"] = null;
-                        Response.Redirect("/AdminLogout.aspx", false);
-                        return;
+                        RedirectToLogin();
 
                     }
                 }
             }
             catch (Exception ex)
             {
-                Session["AdminId"] = null;
-                Response.Redirect("/AdminLogout.aspx", false);
+                RedirectToLogin();
             }
         }
-        public void GridBind()
+        private void LoadTabCounts()
+        {
+            string loginId = Session["AdminId"]?.ToString() ?? string.Empty;
+            ucLicenceTabs.LoadCounts(loginId);
+        }
+
+        public void GridBind(string statusFilter = null)
         {
             try
             {
-                DataSet ds = new DataSet();
-                ds = CEI.Licence_CEI_Approved_FinalRecommendationList();
-
-                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                ViewState["LicenceStatusFilter"] = statusFilter;
+                DataTable dt = CEI.Licence_CEI_Applications_List_WithFilter(statusFilter);
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    GridView1.DataSource = ds;
+                    GridView1.DataSource = dt;
                     GridView1.DataBind();
                 }
                 else
                 {
                     GridView1.DataSource = null;
                     GridView1.DataBind();
-
                 }
-
-                ds.Dispose();
+                dt?.Dispose();
             }
             catch (Exception ex)
             {
-                string errorScript = "alert(\"An error occurred: " + ex.Message.Replace("'", "\\'") + "\");";
+                string errorScript = "alert(\"An error occurred: " +
+                                     ex.Message.Replace("'", "\\'") + "\");";
                 ScriptManager.RegisterStartupScript(this, GetType(), "errorMessage", errorScript, true);
             }
-
-
         }
+        protected void ucLicenceTabs_TabSelected(object sender, CommandEventArgs e)
+        {
+            if (Convert.ToString(Session["AdminId"]) == string.Empty)
+            { RedirectToLogin(); return; }
+            string arg = e.CommandArgument.ToString();
+            string statusFilter = arg.Equals("All", StringComparison.OrdinalIgnoreCase) ? null : arg;
+            GridBind(statusFilter);
+        }
+
 
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
@@ -79,7 +88,7 @@ namespace CEIHaryana.Admin
                 Label lblApplicationId = (Label)row.FindControl("lblApplicationId");
                 Label lblgetCategory = (Label)row.FindControl("lblgetCategory");
                 Label lblLicenceType = (Label)row.FindControl("lblLicenceType");
-                
+
                 string applicationId = lblApplicationId?.Text;
                 string category = lblgetCategory?.Text;
 
@@ -109,7 +118,7 @@ namespace CEIHaryana.Admin
                                 break;
                         }
                     }
-                   else if (!string.IsNullOrEmpty(lblLicenceType.Text) && lblLicenceType.Text == "Renewal")
+                    else if (!string.IsNullOrEmpty(lblLicenceType.Text) && lblLicenceType.Text == "Renewal")
                     {
                         switch (category)
                         {
@@ -129,6 +138,10 @@ namespace CEIHaryana.Admin
                 }
             }
         }
-
+        private void RedirectToLogin()
+        {
+            Session["AdminId"] = null;
+            Response.Redirect("/AdminLogout.aspx", false);
+        }
     }
 }
