@@ -1,0 +1,10 @@
+        public DataSet Licence_CEI_Approved_FinalRecommendationList()
+        {
+            return DBTask.ExecuteDataset(ConfigurationManager.ConnectionStrings["DBConnection"].ToString(), "sp_Get_ApprovedLicence_Cei_Applications_List");
+        }
+
+
+        public DataSet GetData_For_Sldhistory_TabCount_Admin(string LoginId)
+        {
+            return DBTask.ExecuteDataset(ConfigurationManager.ConnectionStrings["DBConnection"].ToString(), "Sp_GetSldHistory_TabsCount_ForAdmin", LoginId);
+        }

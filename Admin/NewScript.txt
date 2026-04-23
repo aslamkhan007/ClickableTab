@@ -1,0 +1,93 @@
+
+ALTER PROCEDURE [dbo].[Sp_ApproveSdlHistoryForAdmin_WithFilterTabs]
+( 
+    @ID nvarchar(50),
+    @Status_type nvarchar(400) 
+)  
+AS 
+BEGIN 
+    SELECT DISTINCT
+        SLD_ID,
+        Status_type,
+		OwnerName,
+        SiteOwnerAddress,
+        SLDApproved,
+        [Path],
+        RequestLetter,
+        CONVERT(varchar, AcceptedOrReturnDate, 103) AS AcceptedOrReturnDate,
+        CONVERT(varchar, ApprovedOrRejectedDate, 103) AS ApprovedOrRejectedDate,
+        CONVERT(varchar, SubmittedDate, 103) AS SubmittedDate,
+        Remarks,
+        Rejection,
+        YEAR(SubmittedDate) AS YearSubmitted,   -- Include year for ordering
+        MONTH(SubmittedDate) AS MonthSubmitted ,  -- Include month for ordering
+		CASE WHEN Status_type  IN ('Submitted', 'InProcess') THEN AssignTo ELSE NULL END AS PendingAt 
+    FROM tbl_SingleLineDiagram
+    WHERE 
+	 --Status_type IN ('Submitted','Approved', 'InProcess', 'Returned','Rejected')
+	 	( @Status_type IS NULL OR Status_type IN (Select RTRIM(LTRIM(value)) from string_split(@Status_type,',')) )
+
+
+    ORDER BY 
+        YearSubmitted DESC,     
+        MonthSubmitted DESC,    
+        SubmittedDate DESC      
+END
+
+
+
+ALTER PROCEDURE [dbo].[sp_Get_ApprovedLicence_Cei_Applications_List]  
+AS  
+BEGIN   
+--Only VoltageLevel function added by navneet
+  SELECT  case when La.LicenceType !='New' then dbo.Fn_GetVoltagelevelforlicense(LA.RegistrationId, LA.Categary)  else '650V' end as VoltageLevel,
+  LA.ApplicationId,LA.RegistrationId,LA.Categary as Categary,
+
+    --Added By Aslam On 19 Nov 2025 To Show SubmitResubmit Status
+  --LA.ApplicationStatus,  
+  Case when LA.ApplicationStatus = 'Submit' and LA.AppCount > 1  then 'ReSubmit' ELSE ApplicationStatus  End ApplicationStatus, 
+  --Convert(varchar,LA.CreatedDate,103) As CreatedDate,
+  --Added By Aslam On 19 Nov 2025 To Show SubmitResubmit Date
+  CONVERT(VARCHAR(100),Case when  LA.AppCount = 1  then LA.CreatedDate  ELSE  LA.ModifiedDate End ,103) AS CreatedDate,
+  --LA.ApplicantName as Name,
+  CASE WHEN la.Categary = 'Contractor' And La.LicenceType = 'New' And La.ApplicationStatus <> 'Approved' THEN (SELECT TOP 1 NameOfCompany  FROM tbl_ContractorApplications WHERE CreatedBy = LA.RegistrationId ORDER BY CreatedDate DESC) 
+       WHEN la.Categary = 'Contractor' And La.LicenceType = 'New' And La.ApplicationStatus = 'Approved' THEN  (SELECT TOP 1 ISNULL(cc.FirmName,'')   FROM tbl_ContractorDetails cc   WHERE cc.UserId = LA.RegistrationId AND cc.Status = 1)
+       WHEN la.Categary = 'Contractor' And La.LicenceType = 'ReNewal'  THEN  (SELECT TOP 1 ISNULL(cc.FirmName,'')   FROM tbl_ContractorDetails cc   WHERE cc.UserId = LA.RegistrationId AND cc.Status = 1)
+  ELSE LA.ApplicantName End as Name,
+
+  LA.District as PermanentDistrict,LA.Assignto,La.LicenceType  
+  FROM tbl_Licence_Application AS LA  
+   WHERE   
+   --LA.ApplicationStatus IN ('Approved','Rejected')    
+   --AND  
+   LA.Status = 1  
+END  
+
+
+ALTER PROCEDURE [dbo].[Sp_GetSldHistory_TabsCount_ForAdmin]
+( 
+    @LoginID nvarchar(50)
+)  
+AS 
+BEGIN 
+    SELECT 
+	COUNT(*) AS TotalRequest,
+    Count(Case When Status_type  ='Submitted' Then SLD_ID End)  AS NewApplication,
+	Count(Case When Status_type = 'InProcess' Then SLD_ID End)  AS InProcess,
+	Count(Case When Status_type IN ('Approved', 'Rejected','Returned') Then SLD_ID End)  AS ActionTaken   
+    FROM tbl_SingleLineDiagram
+	Where status = 1
+        
+END
+
+
+
+
+
+select * From tbl_Licence_Application where ApplicationStatus = 'Approved'
+select * From tbl_Licence_Application where ApplicationStatus = 'Rejected'
+select * From tbl_Licence_Application where ApplicationStatus = 'Return'
+select * From tbl_Licence_Application where ApplicationStatus  in  ('Submit,Scrutiny,Verified,InProcess')
+select * From tbl_Licence_Application 
+
+
