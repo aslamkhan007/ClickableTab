@@ -62,8 +62,8 @@ namespace CEIHaryana.SiteOwnerPages
                 {
                     //ID = Session["InspectionId"].ToString();
 
-                    //fileName = "https://ceiharyana.com" + e.CommandArgument.ToString();
-                    fileName = "https://ceiharyana.com" + e.CommandArgument.ToString();
+                    //fileName = "https://uat.ceiharyana.com" + e.CommandArgument.ToString();
+                    fileName = "https://uat.ceiharyana.com" + e.CommandArgument.ToString();
                     string script = $@"<script>window.open('{fileName}','_blank');</script>";
                     ClientScript.RegisterStartupScript(this.GetType(), "OpenFileInNewTab", script);
 
@@ -253,7 +253,16 @@ namespace CEIHaryana.SiteOwnerPages
             {
                 if (Page.IsValid)
                 {
-                    string IntimationId = Session["id"].ToString();
+
+                string conditionalError;
+                if (!ValidateAllRequiredFields(out conditionalError))
+                {
+                    ScriptManager.RegisterStartupScript(this, GetType(), "alert",
+                        "alert('" + conditionalError.Replace("'", "\\'") + "');", true);
+                    return;
+                }
+
+                        string IntimationId = Session["id"].ToString();
                     string CreatedBy = Session["SiteOwnerId"].ToString();
                     string count = Session["NoOfInstallations"].ToString();
                     string installationNo = Session["IHID"].ToString();
@@ -486,8 +495,6 @@ namespace CEIHaryana.SiteOwnerPages
                 TPN2.Visible = false;
             }
         }
-
-
         protected void btnVerify_Click(object sender, EventArgs e)
         {
             if (Session["OTP"].ToString() == txtOTP.Text.Trim())
@@ -514,18 +521,18 @@ namespace CEIHaryana.SiteOwnerPages
                 //txtOTP.Text = "123456";
                 //txtOTP.Enabled = false;
                 //#endregion
-                //Session["ContractorEmail"] = "OTPSEND";
+                Session["ContractorEmail"] = "OTPSEND";
                 // Session["ContractorEmail"] = "";
                 btnResend.Visible = true;
                // ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert('Enter the OTP you received to Your Contractor's Email');", true);
             }
-            //else if (Session["ContractorEmail"].ToString() == "OTPSEND")
-            //{
-            //    OTP.Visible = true;
-            //    btnVerify.Text = "Verify";
-            //    btnResend.Visible = true;
-            //    Session["ContractorEmail"] = "";
-            //}
+            else if (Session["ContractorEmail"].ToString() == "OTPSEND")
+            {
+                OTP.Visible = true;
+                btnVerify.Text = "Verify";
+                btnResend.Visible = true;
+                Session["ContractorEmail"] = "";
+            }
             else
             {
                 if (Session["OTP"].ToString() == txtOTP.Text.Trim())
@@ -583,6 +590,127 @@ namespace CEIHaryana.SiteOwnerPages
 
             }
 
+        }
+
+        private bool ValidateAllRequiredFields(out string errorMessage)
+        {
+            List<string> errors = new List<string>();
+
+            // ---------- Local Agent (f)----------
+            if (RadioButtonList2.SelectedIndex == -1)
+                errors.Add("Please Select any Sanction Load");
+
+            if (RadioButtonList2.SelectedValue == "1")
+            {
+                if (string.IsNullOrWhiteSpace(TxtAgentName.Text))
+                    errors.Add("Please Enter Local Agent Name");
+                if (string.IsNullOrWhiteSpace(txtAgentAddress.Text))
+                    errors.Add("Please Enter Local Agent Address");
+                if (string.IsNullOrWhiteSpace(txtAgentPhone.Text))
+                    errors.Add("Please Enter Local Agent Contact");
+            }
+
+            // ---------- Escalator Details (f) ----------
+            if (string.IsNullOrWhiteSpace(txtMake.Text))
+                errors.Add("Please Enter Make");
+            if (string.IsNullOrWhiteSpace(txtSerialNo.Text))
+                errors.Add("Please Enter Serial No.");
+            if (string.IsNullOrWhiteSpace(txtErectionDate.Text))
+                errors.Add("Please Enter Date of Erection");
+            if (ddlEscalatorType.SelectedValue == "0")
+                errors.Add("Please Select Escalator Type");
+            if (string.IsNullOrWhiteSpace(txtEscalatorSpeedContract.Text))
+                errors.Add("Please Enter Speed of Escalator");
+            if (string.IsNullOrWhiteSpace(txtMaxPersonCapacity.Text))
+                errors.Add("Please Enter Max Person Capacity");
+            if (string.IsNullOrWhiteSpace(txtWeight.Text))
+                errors.Add("Please Enter Weight of Escalator");
+            if (string.IsNullOrWhiteSpace(txtPitDepth.Text))
+                errors.Add("Please Enter Depth of Pit");
+            if (string.IsNullOrWhiteSpace(txtTypeofControll.Text))
+                errors.Add("Please Enter Type of Control");
+
+            // --Machine Main Breaker Details (f) ---
+            if (string.IsNullOrWhiteSpace(txtMakeMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker Make");
+            if (string.IsNullOrWhiteSpace(txtTypeMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker Type");
+            if (ddlPoleMainBreaker.SelectedValue == "0")
+                errors.Add("Please Select Main Breaker Poles");
+            if (string.IsNullOrWhiteSpace(txtratingMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker Rating");
+            if (string.IsNullOrWhiteSpace(txtCapacityMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker Capacity");
+
+            if (string.IsNullOrWhiteSpace(txtMakeRCCBMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker RCCB Make");
+            if (ddlPolesRCCBMainBreaker.SelectedValue == "0")
+                errors.Add("Please Select Main Breaker RCCB Poles");
+            if (string.IsNullOrWhiteSpace(txtRatingRCCBMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker RCCB Rating");
+            if (string.IsNullOrWhiteSpace(txtfaultratingRCCBMainBreaker.Text))
+                errors.Add("Please Enter Main Breaker RCCB Fault Rating");
+
+            // ---------- Lighting Load Breaker Details (f) ----------
+            if (string.IsNullOrWhiteSpace(txtMakeLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker Make");
+            if (string.IsNullOrWhiteSpace(txtTypeLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker Type");
+            if (ddlPolesLoadBreaker.SelectedValue == "0")
+                errors.Add("Please Select Load Breaker Poles");
+            if (string.IsNullOrWhiteSpace(txtRatingLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker Rating");
+            if (string.IsNullOrWhiteSpace(txtCapacityLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker Capacity");
+
+            if (string.IsNullOrWhiteSpace(txtMakeRCCBLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker RCCB Make");
+            if (ddlpolesRCCBLoadBreaker.SelectedValue == "0")
+                errors.Add("Please Select Load Breaker RCCB Poles");
+            if (string.IsNullOrWhiteSpace(txtRatingRCCBLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker RCCB Rating");
+            if (string.IsNullOrWhiteSpace(txtFaultCurrentRCCBLoadBreaker.Text))
+                errors.Add("Please Enter Load Breaker RCCB Fault Rating");
+
+            // -- Insulation Resistance (v) --
+            if (string.IsNullOrWhiteSpace(txtwholeInstallation.Text))
+                errors.Add("Please Enter Insulation For Whole Installation");
+
+            if (ddlPoleMainBreaker.SelectedValue == "1")
+            {
+                if (string.IsNullOrWhiteSpace(txtNeutralPhase.Text))
+                    errors.Add("Please Enter Neutral and Phase Value");
+                if (string.IsNullOrWhiteSpace(txtEarthPhase.Text))
+                    errors.Add("Please Enter Earth and Phase Value");
+            }
+            else
+            {
+                if (string.IsNullOrWhiteSpace(txtRedYellow.Text))
+                    errors.Add("Please Enter Red Phase - Yellow Phase Value");
+                if (string.IsNullOrWhiteSpace(txtRedBlue.Text))
+                    errors.Add("Please Enter Red Phase - Blue Phase Value");
+                if (string.IsNullOrWhiteSpace(txtYellowBlue.Text))
+                    errors.Add("Please Enter Yellow Phase - Blue Phase Value");
+                if (string.IsNullOrWhiteSpace(txtRedEarth.Text))
+                    errors.Add("Please Enter Red Phase - Earth Wire Value");
+                if (string.IsNullOrWhiteSpace(txtYellowEarth.Text))
+                    errors.Add("Please Enter Yellow Phase - Earth Wire Value");
+                if (string.IsNullOrWhiteSpace(txtBlueEarth.Text))
+                    errors.Add("Please Enter Blue Phase - Earth Wire Value");
+            }
+
+            // -- Supervisor/Contractor Details (f) ----
+            if (ddlContName.SelectedValue == "0")
+                errors.Add("Please Select Contractor Name");
+            if (string.IsNullOrWhiteSpace(txtContName.Text))
+                errors.Add("Contractor License No. Not Found");
+            if (string.IsNullOrWhiteSpace(txtContExp.Text))
+                errors.Add("Contractor License Expiry Date Not Found");
+            if (ddlLicenseNo.SelectedValue == "0")
+                errors.Add("Please Select Supervisor Name");
+
+            errorMessage = string.Join("\\n", errors);
+            return errors.Count == 0;
         }
     }
 }
