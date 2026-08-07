@@ -1,7 +1,12 @@
 ﻿using CEI_PRoject;
+using CEIHaryana.Model.Common.Classes;
+using CEIHaryana.Model.Common.Method;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -13,36 +18,49 @@ namespace CEIHaryana.Supervisor
     public partial class SwitchingSubstationTestReport : System.Web.UI.Page
     {
         CEI CEI = new CEI();
-        string TestRportId =string.Empty;
+        string TestRportId = string.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!IsPostBack)
                 {
-                    if (Session["SupervisorID"] != null || Request.Cookies["SupervisorID"] != null)
+                    if (Session["SupervisorID"] != null)
                     {
-                        txtapplication.Text = Session["ApplicationForTestReport"].ToString().Trim();
-                        txtInstallation.Text = Session["Typs"].ToString().Trim();
-                        txtid.Text = Session["ID"].ToString().Trim();
-                        txtNOOfInstallation.Text = Session["NoOfInstallations"].ToString().Trim() + " Out of " + Session["TotalInstallation"].ToString().Trim();
-                        txtApplicantType.Text = Session["ApplicantType"].ToString().Trim();
+                        string token = Request.QueryString["d"];
+
+                        if (string.IsNullOrEmpty(token))
+                        {
+                            Response.Redirect("/Supervisor/InstallationDetails.aspx");
+                            return;
+                        }
+                        InstallationComponent obj = GetInstallationData();
+                        ViewState["InstallationData"] = obj;
+                        txtapplication.Text = obj.Application;
+                        txtInstallation.Text = obj.Typs;
+                        txtid.Text = obj.IHID;
+                        txtNOOfInstallation.Text = obj.NoOfInstallation + " Out of " + obj.TotalInstallation;
+                        txtApplicantType.Text = obj.ApplicantType;
+
                         ddlEarthing();
-                        ddlLoadBindVoltage();
+                        ddlLoadBindVoltage(obj.VoltageLevel);
+                    }
+                    else
+                    {
+                        Response.Redirect("/SupervisorLogout.aspx");
                     }
                 }
             }
             catch
             {
-                Response.Redirect("/Login.aspx");
+                Response.Redirect("/SupervisorLogout.aspx");
             }
         }
-        private void ddlLoadBindVoltage()
+        private void ddlLoadBindVoltage(string voltage)
         {
-            string Voltage = Session["VoltageLevel"].ToString();
             DataSet dsVoltage = new DataSet();
-            dsVoltage = CEI.GetddlVotlageforSwitchingStation(Voltage);
-            ddlVoltage.DataSource = dsVoltage;           
+            dsVoltage = CEI.GetddlVotlageforSwitchingStation(voltage);
+            ddlVoltage.DataSource = dsVoltage;
             ddlVoltage.DataTextField = "VoltageID";
             ddlVoltage.DataValueField = "Voltage";
             ddlVoltage.DataBind();
@@ -93,7 +111,7 @@ namespace CEIHaryana.Supervisor
             Control[] earthingTypes = { EarthingSubstation1, EarthingSubstation2, EarthingSubstation3, EarthingSubstation4,EarthingSubstation5,EarthingSubstation6,EarthingSubstation7,EarthingSubstation8,EarthingSubstation9,EarthingSubstation10,
                 EarthingSubstation11, EarthingSubstation12, EarthingSubstation13, EarthingSubstation14, EarthingSubstation15, EarthingSubstation16, EarthingSubstation17, EarthingSubstation18,
                 EarthingSubstation19,EarthingSubstation20,EarthingSubstation21,EarthingSubstation22,EarthingSubstation23,EarthingSubstation24,EarthingSubstation25,EarthingSubstation26,
-                EarthingSubstation27,EarthingSubstation28,EarthingSubstation29,EarthingSubstation30, EarthingSubstation31, EarthingSubstation32, EarthingSubstation33, EarthingSubstation34, 
+                EarthingSubstation27,EarthingSubstation28,EarthingSubstation29,EarthingSubstation30, EarthingSubstation31, EarthingSubstation32, EarthingSubstation33, EarthingSubstation34,
                 EarthingSubstation35, EarthingSubstation36, EarthingSubstation37, EarthingSubstation38, EarthingSubstation39, EarthingSubstation40 };
 
             // First, hide all controls
@@ -115,7 +133,7 @@ namespace CEIHaryana.Supervisor
         protected void ddlUsedFor_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Array of "Other" textboxes
-            TextBox[] txtOtherEarthing = { txtOtherEarthing1,txtOtherEarthing2,txtOtherEarthing3,txtOtherEarthing4,txtOtherEarthing5,txtOtherEarthing6,txtOtherEarthing7, txtOtherEarthing8, txtOtherEarthing9, 
+            TextBox[] txtOtherEarthing = { txtOtherEarthing1,txtOtherEarthing2,txtOtherEarthing3,txtOtherEarthing4,txtOtherEarthing5,txtOtherEarthing6,txtOtherEarthing7, txtOtherEarthing8, txtOtherEarthing9,
                 txtOtherEarthing10,txtOtherEarthing11,txtOtherEarthing12,txtOtherEarthing13,txtOtherEarthing14,txtOtherEarthing15,txtOtherEarthing16,txtOtherEarthing17,txtOtherEarthing18,
                 txtOtherEarthing19, txtOtherEarthing20,txtOtherEarthing21,txtOtherEarthing22,txtOtherEarthing23, txtOtherEarthing24, txtOtherEarthing25, txtOtherEarthing26, txtOtherEarthing27,
                 txtOtherEarthing28, txtOtherEarthing29, txtOtherEarthing30, txtOtherEarthing31, txtOtherEarthing32, txtOtherEarthing33, txtOtherEarthing34, txtOtherEarthing35, txtOtherEarthing36, txtOtherEarthing37,
@@ -123,18 +141,18 @@ namespace CEIHaryana.Supervisor
 
             // Array of dropdowns
             DropDownList[] ddlUsedFor = { ddlUsedFor1, ddlUsedFor2, ddlUsedFor3, ddlUsedFor4 ,ddlUsedFor5, ddlUsedFor6, ddlUsedFor7, ddlUsedFor8 ,ddlUsedFor9, ddlUsedFor10, ddlUsedFor11, ddlUsedFor12 ,
-                ddlUsedFor13 , ddlUsedFor14 , ddlUsedFor15 , ddlUsedFor16 , ddlUsedFor17 , ddlUsedFor18 , ddlUsedFor19 , ddlUsedFor20 , ddlUsedFor21 , ddlUsedFor22 , ddlUsedFor23 , ddlUsedFor24 , 
+                ddlUsedFor13 , ddlUsedFor14 , ddlUsedFor15 , ddlUsedFor16 , ddlUsedFor17 , ddlUsedFor18 , ddlUsedFor19 , ddlUsedFor20 , ddlUsedFor21 , ddlUsedFor22 , ddlUsedFor23 , ddlUsedFor24 ,
                 ddlUsedFor25 ,ddlUsedFor26 ,ddlUsedFor27 ,ddlUsedFor28 ,ddlUsedFor29 ,ddlUsedFor30 ,ddlUsedFor31 ,ddlUsedFor32 ,ddlUsedFor33 ,ddlUsedFor34,ddlUsedFor35 ,ddlUsedFor36 ,ddlUsedFor37 ,
                 ddlUsedFor38 ,ddlUsedFor39 ,ddlUsedFor40};
             RequiredFieldValidator[] RequiredFieldValidator = { RequiredFieldValidator99, RequiredFieldValidator98,RequiredFieldValidator97,RequiredFieldValidator96,RequiredFieldValidator95,
-                RequiredFieldValidator79, RequiredFieldValidator75,RequiredFieldValidator71,RequiredFieldValidator67,RequiredFieldValidator63, RequiredFieldValidator59, RequiredFieldValidator55, 
-                RequiredFieldValidator51, RequiredFieldValidator47, RequiredFieldValidator23, RequiredFieldValidator25, RequiredFieldValidator28, RequiredFieldValidator35, RequiredFieldValidator39, 
+                RequiredFieldValidator79, RequiredFieldValidator75,RequiredFieldValidator71,RequiredFieldValidator67,RequiredFieldValidator63, RequiredFieldValidator59, RequiredFieldValidator55,
+                RequiredFieldValidator51, RequiredFieldValidator47, RequiredFieldValidator23, RequiredFieldValidator25, RequiredFieldValidator28, RequiredFieldValidator35, RequiredFieldValidator39,
                 RequiredFieldValidator43, RequiredFieldValidator123, RequiredFieldValidator2113, RequiredFieldValidator2115,RequiredFieldValidator2111,RequiredFieldValidator2121,RequiredFieldValidator2126,
             RequiredFieldValidator2130,RequiredFieldValidator2135,RequiredFieldValidator2140,RequiredFieldValidator2146,RequiredFieldValidator2150,RequiredFieldValidator2154,RequiredFieldValidator2158,
                 RequiredFieldValidator2162,RequiredFieldValidator2144,RequiredFieldValidator2170,RequiredFieldValidator2174,RequiredFieldValidator2179,RequiredFieldValidator2183,RequiredFieldValidator2186};
 
             // Hide all textboxes initially
-           
+
 
             // Loop through each dropdown and check if "Other" is selected
             for (int i = 0; i < ddlUsedFor.Length; i++)
@@ -149,44 +167,92 @@ namespace CEIHaryana.Supervisor
 
         protected void BtnSubmitSubstation_Click(object sender, EventArgs e)
         {
-            if (Check.Checked == true)
+            if (Session["SupervisorID"] == null)
             {
-                string count = Session["NoOfInstallations"].ToString().Trim();
-                string CreatedBy = Session["SupervisorID"].ToString().Trim();
-                string installationNo = Session["IHID"].ToString();
-                DataSet ds = new DataSet();
-                ds = CEI.InsertSwitchinData(count, txtid.Text, txtSerialNo.Text, ddlVoltage.SelectedValue.ToString(), txtName.Text, 
-                    ddlBreakerType.SelectedItem.Text, txtOther.Text,
-                     txtBreakerNo.Text, txtCapacity.Text, ddlEarthingsubstation.SelectedItem.Text, CreatedBy);
-                if (ds != null && ds.Tables.Count > 0)
-                {
-                    TestRportId = ds.Tables[0].Rows[0]["TReportID"].ToString();
-                }
-                //int totalRows = Math.Min(tbl.Rows.Count, int.Parse(ddlEarthingsubstation.SelectedItem.Text));
-
-                for (int rowIndex = 1; rowIndex <= 1; rowIndex++)
-                {
-                    HtmlTableRow row = tbl.Rows[rowIndex];
-                    for (int i = 1; i <= int.Parse(ddlEarthingsubstation.SelectedItem.Text); i++)
-                    {
-
-
-                        DropDownList ddlEarthingType = (DropDownList)row.FindControl("ddlSubstationEarthing" + i);
-                        DropDownList ddlUsedFor = (DropDownList)row.FindControl("ddlUsedFor" + i);
-                        TextBox txtEarthingValue = (TextBox)row.FindControl("txtSubstationEarthing" + i);
-                        TextBox txtOtherEarthing = (TextBox)row.FindControl("txtOtherEarthing" + i);
-
-                        CEI.InsertSwitchingEarting(TestRportId, i, ddlEarthingType.SelectedItem.Text, txtEarthingValue.Text, ddlUsedFor.SelectedItem.Text, txtOtherEarthing.Text);
-
-                    }
-                }
-                CEI.UpdateInstallations(installationNo, txtid.Text);
-                Reset();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "showalert", "alertWithRedirectdata();", true);
+                Response.Redirect("/SupervisorLogout.aspx");
+                return;
             }
-            else
+
+            if (!Check.Checked)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "showalert()", "alert('You have to check the declaration first !!!')", true);
+                return;
+            }
+
+            InstallationComponent obj = InstallationData;
+            string count = obj.NoOfInstallation;
+            string CreatedBy = Session["SupervisorID"].ToString().Trim();
+            string installationNo = obj.InstallationId;
+
+            string connectionString = ConfigurationManager.ConnectionStrings["DBConnection"].ConnectionString;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+
+                SqlTransaction tran = con.BeginTransaction();
+
+                try
+                {
+                    DataSet ds = CEI.InsertSwitchinData(
+                        con,
+                        tran,
+                        count,
+                        txtid.Text,
+                        txtSerialNo.Text,
+                        ddlVoltage.SelectedValue,
+                        txtName.Text,
+                        ddlBreakerType.SelectedItem.Text,
+                        txtOther.Text,
+                        txtBreakerNo.Text,
+                        txtCapacity.Text,
+                        ddlEarthingsubstation.SelectedItem.Text,
+                        CreatedBy);
+
+                    if (ds != null && ds.Tables.Count > 0)
+                    {
+                        TestRportId = ds.Tables[0].Rows[0]["TReportID"].ToString();
+                    }
+
+                    for (int rowIndex = 1; rowIndex <= 1; rowIndex++)
+                    {
+                        HtmlTableRow row = tbl.Rows[rowIndex];
+
+                        for (int i = 1; i <= int.Parse(ddlEarthingsubstation.SelectedItem.Text); i++)
+                        {
+                            DropDownList ddlEarthingType = (DropDownList)row.FindControl("ddlSubstationEarthing" + i);
+                            DropDownList ddlUsedFor = (DropDownList)row.FindControl("ddlUsedFor" + i);
+                            TextBox txtEarthingValue = (TextBox)row.FindControl("txtSubstationEarthing" + i);
+                            TextBox txtOtherEarthing = (TextBox)row.FindControl("txtOtherEarthing" + i);
+
+                            CEI.InsertSwitchingEarting(
+                                con,
+                                tran,
+                                TestRportId,
+                                i,
+                                ddlEarthingType.SelectedItem.Text,
+                                txtEarthingValue.Text,
+                                ddlUsedFor.SelectedItem.Text,
+                                txtOtherEarthing.Text);
+                        }
+                    }
+
+                    CEI.UpdateInstallations(
+                        con,
+                        tran,
+                        installationNo,
+                        txtid.Text);
+
+                    tran.Commit();
+
+                    Reset();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "showalert", "alertWithRedirectdata();", true);
+                }
+                catch (Exception)
+                {
+                    tran.Rollback();
+                    throw;
+                }
             }
         }
         public void Reset()
@@ -197,15 +263,28 @@ namespace CEIHaryana.Supervisor
 
         protected void ddlBreakerType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlBreakerType.SelectedValue =="3")
+            if (ddlBreakerType.SelectedValue == "3")
             {
-
                 Other.Visible = true;
             }
             else
             {
                 Other.Visible = false;
             }
+        }
+        private InstallationComponent InstallationData
+        {
+            get
+            {
+                return ViewState["InstallationData"] as InstallationComponent;
+            }
+        }
+        private InstallationComponent GetInstallationData()
+        {
+            string token = Request.QueryString["d"];
+            if (string.IsNullOrWhiteSpace(token)) return null;
+            string json = CryptoHelper.Decrypt(token);
+            return JsonConvert.DeserializeObject<InstallationComponent>(json);
         }
     }
 }
