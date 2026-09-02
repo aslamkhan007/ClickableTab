@@ -1,0 +1,149 @@
+
+
+ALTER Procedure [dbo].[sp_SubstationDataWithId]    
+(    
+--@ID int  
+@ID  nvarchar(50)
+)    
+As    
+Begin    
+Select Distinct
+CD.Email As ContractorEmail, CD.ContactNo AS ContractorContactNo,
+CASE
+    WHEN Wi.AppliedBy = 'SiteOwner' THEN 'SiteOwner'
+    ELSE
+        CASE
+            WHEN CD.LicenceNew IS NOT NULL AND CD.LicenceNew != '' THEN CD.LicenceNew
+            ELSE CD.LicenceOld
+        END + '/' + CD.Name
+END AS ContractorWhoCreated,
+
+CASE
+    WHEN Wi.AppliedBy = 'SiteOwner' THEN 'SiteOwner'
+    ELSE
+        CASE
+            WHEN WS.CertificateNew IS NOT NULL AND WS.CertificateNew != '' THEN WS.CertificateNew
+            ELSE WS.CertificateOld
+        END + '/' + WS.Name
+END AS SupervisorWhoCreated,
+CASE  
+WHEN WI.PremisesType = 'Other'
+THEN WI.OtherPremises
+ELSE  WI.PremisesType END AS Permises,
+CASE WHEN ST.LightningArrestorLocation = 'other' THEN ST.OtherLALocation
+ELSE  ST.LightningArrestorLocation
+END AS LightningArrestorLocationOther ,
+ST.TestReportId+' / '+ WI.Id as SubStationId,
+ ST.TestReportId as TestReportId,
+ CONVERT(VARCHAR(10), ST.ApprovedDate, 105) as ApprovalDate,
+ CONVERT(VARCHAR(10), WI.WorkStartDate, 105) as WorkStartDate,
+CONVERT(VARCHAR(10), WI.CompletionDate, 105) as CompletionDate,
+CONVERT(VARCHAR(10), WI.CreatedDate, 105) AS SubmittedDate,
+ WI.Id as WorkIntimationId,
+ WI.ContractorType,
+ WI.ApplicantType,
+WI.District,
+WI.Inspectiontype,
+ VL.MaxVoltage AS LevelVoltage ,
+WI.NameOfOwner,
+WI.NameOfAgency, 
+WI.ContactNo,
+WI.Address,
+CA.Area,
+ST.TransformerSerialNumber,
+ST.TransformerCapacityType,
+ST.TranformerType,
+ST.YearOfManufacturing,
+ST.TypeofHTPrimarySideSwitch,
+ST.TransformerCapacity,
+ST.TranformerType,
+ST.Count,
+ST.PrimaryVoltage,
+ST.SecondoryVoltage,
+ST.OilCapacity,
+ST.BreakDownVoltageofOil,
+ST.HtInsulationHVEarth,
+ST.LtInsulationLVEarth,
+ST.LowestvaluebetweenHTLTSide,
+ST.NumberOfEarthing,
+ST.EarthingType1,
+ST.Valueinohms1,
+ST.UsedFor1,
+ST.OtherEarthing1,
+ST.EarthingType2,
+ST.Valueinohms2,
+ST.UsedFor2,
+ST.OtherEarthing2,
+ST.EarthingType3,
+ST.Valueinohms3,
+ST.UsedFor3,
+ST.OtherEarthing3,
+ST.EarthingType4,
+ST.Valueinohms4,
+ST.UsedFor4,
+ST.OtherEarthing4,
+ST.EarthingType5,
+ST.Valueinohms5,
+ST.UsedFor5,
+ST.OtherEarthing5,
+ST.EarthingType6,
+ST.Valueinohms6,
+ST.UsedFor6,
+ST.OtherEarthing6,
+ST.EarthingType7,
+ST.Valueinohms7,
+ST.UsedFor7,
+ST.OtherEarthing7,
+ST.EarthingType8,
+ST.Valueinohms8,
+ST.UsedFor8,
+ST.OtherEarthing8,
+ST.EarthingType9,
+ST.Valueinohms9,
+ST.UsedFor9,
+ST.OtherEarthing9,
+ST.EarthingType10,
+ST.Valueinohms10,
+ST.UsedFor10,
+ST.OtherEarthing10,
+ST.EarthingType11,
+ST.Valueinohms11,
+ST.UsedFor11,
+ST.OtherEarthing11,
+ST.EarthingType12,
+ST.Valueinohms12,
+ST.UsedFor12,
+ST.OtherEarthing12,
+ST.EarthingType13,
+ST.Valueinohms13,
+ST.UsedFor13,
+ST.OtherEarthing13,
+ST.EarthingType14,
+ST.Valueinohms14,
+ST.UsedFor14,
+ST.OtherEarthing14,
+ST.EarthingType15,
+ST.Valueinohms15,
+ST.UsedFor15,
+ST.OtherEarthing15,
+ST.LoadBreakingCapacityOfBreakerInKA,
+ST.TypeOfLTProtection,
+ST.CapacityOfIndividualFuseInAMPS,
+ST.CapacityOfLTBreakerInAMPS,
+ST.LoadBreakingCapacityOfBreakerInAMPS,
+ST.SeaLevelOfTransformerInMeters,
+ST.NamePlateDocument,
+ST.SitephotographDocument
+From tbl_SubstationTransformer As ST  
+iNNER jOIN tbl_WorkIntimation as WI On ST.IntimationId = WI.id  
+Left Join tbl_ContractorDetails AS CD ON CD.UserId = WI.CreatedBy  
+LEFT JOIN tbl_CEIAreaCovered AS CA ON WI.District = CA.AreaCovered
+Left join tbl_WiremanandSuperviserDetails AS WS on WS.UserId = ST.CreatedBy
+Left join tbl_VoltageLevel AS VL On WI.VoltageLevel=VL.Voltagelevel
+Where 
+--ST.ID = @ID    
+ST.TestReportId=@ID
+End
+
+
+
