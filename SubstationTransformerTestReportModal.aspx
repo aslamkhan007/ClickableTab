@@ -2128,6 +2128,99 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="card" id="SiteOwnerSummaryCard" runat="server" visible="false" style="background: #fcfcfc; font-size: 22px !important;">
+                            <div class="card-title">Work Intimation &amp; Test Report Details</div>
+
+                            <div class="row row-modal">
+                                <div class="col-6">
+                                    <label>Electrical Installation For</label>
+                                    <asp:TextBox class="form-control" ID="txtInstallation_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-6">
+                                    <label>Name of Owner/ Consumer</label>
+                                    <asp:TextBox class="form-control" ID="txtName_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="row row-modal">
+                                <div class="col-6">
+                                    <label>Address</label>
+                                    <asp:TextBox class="form-control" ID="txtAddress_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-6">
+                                    <label>Contact Details</label>
+                                    <asp:TextBox class="form-control" ID="txtPhone_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="row row-modal">
+                                <div class="col-6">
+                                    <label>Type of Premises</label>
+                                    <asp:TextBox class="form-control" ID="TxtPremises_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-6">
+                                    <label>Highest Voltage Level of Work</label>
+                                    <asp:TextBox class="form-control" ID="txtVoltagelevel_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Serial number of transformer</label>
+                                    <asp:TextBox class="form-control" ID="txtTransformerSerialNumber_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-2">
+                                    <label>Unit of transformer</label>
+                                    <asp:TextBox class="form-control" ID="txtTransformerCapacityType_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-2">
+                                    <label>Capacity of transformer</label>
+                                    <asp:TextBox class="form-control" ID="txtTransformerCapacity_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-4">
+                                    <label>Type of transformer</label>
+                                    <asp:TextBox class="form-control" ID="txtTransformerType_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div id="Div_NamePlateDocument_SO" runat="server" visible="false" class="col-md-4">
+                                    <label>Upload photo with Nameplate no.</label><br />
+                                    <asp:HyperLink ID="HyperLink_NamePlate_SO" runat="server" CssClass="myLink" Text="View Uploaded Report" Target="_blank" />
+                                </div>
+                                <div id="Div_SitePhotograph_SO" runat="server" visible="false" class="col-md-4">
+                                    <label>Upload Site Photograph</label><br />
+                                    <asp:HyperLink ID="HyperLink_SitePhotograph_SO" runat="server" CssClass="myLink" Text="View Uploaded Report" Target="_blank" />
+                                </div>
+                            </div>
+
+                            <div class="card-title">Work Intimation Details (<asp:Label ID="lblIntimationId_SO" runat="server" />)</div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Work Intimation Submitted Date</label>
+                                    <asp:TextBox class="form-control" ID="txtSubmitteddate_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+
+                            <div class="card-title">Test Report Details (<asp:Label ID="lblReportNo_SO" runat="server" />)</div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <label>Test Report Created Date</label>
+                                    <asp:TextBox class="form-control" ID="txtCreatedDate_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-4">
+                                    <label>Prepared By</label>
+                                    <asp:TextBox class="form-control" ID="txtPreparedby_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                                <div class="col-4">
+                                    <label>Test Report Submission Date</label>
+                                    <asp:TextBox class="form-control" ID="txtApprovalDate_SO" ReadOnly="true" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="FullDetailView" runat="server">
                         <div class="card" id="IntimationData" runat="server" visible="true" style="background: #fcfcfc; font-size: 22px !important;">
                             <div class="card-title" style="margin-bottom: 1px; font-size: 22px !important;">Work Intimation Details</div>
                             <div>
@@ -2938,6 +3031,8 @@ Site tests done are found to be in order and it is electrically safe to operate 
                             </div>
                         </div>
                     </div>--%>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <script src="/Assets/js/js/vendor.bundle.base.js"></script>
