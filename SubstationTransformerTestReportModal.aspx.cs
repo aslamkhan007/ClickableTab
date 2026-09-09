@@ -175,7 +175,6 @@ namespace CEIHaryana.TestReportModal
                 DataSet ds = new DataSet();
                 ds = CEI.SubstationTestReportData(ID);
 
-                // ---- Naya check sabse pehle ----
                 string createdBy = ds.Tables[0].Rows[0]["ContractorWhoCreated"].ToString().Trim();
                 isSiteOwnerCase = (createdBy == "SiteOwner");
 
@@ -184,15 +183,22 @@ namespace CEIHaryana.TestReportModal
                     FullDetailView.Visible = false;
                     SiteOwnerSummaryCard.Visible = true;
                 }
-
-                // Approval-status wala part dono cases me common/zaroori hai (BtnSubmit ka text set karta hai)
                 string value1 = Convert.ToString(Session["Approval"]);
                 if (value1.Trim() == "Accept")
                 {
+                    // ddlType.Attributes["onfocus"] = "this.size=3";
+                    //ddlType.Attributes.Add("disabled", "disabled");
+                    //ddlType.Attributes.Add("Readonly", "true");                 
+                    //ddlType.SelectedIndex = ddlType.Items.IndexOf(ddlType.Items.FindByText(value1));
                     BtnSubmit.Text = "Back";
                 }
                 else if (value1.Trim() == "Reject")
                 {
+                    //ddlType.Attributes.Add("Readonly", "true");                  
+                    // ddlType.Attributes.Add("disabled", "disabled");
+                    //ddlType.SelectedIndex = ddlType.Items.IndexOf(ddlType.Items.FindByText(value1));
+                    //Rejection.Visible = true;
+                    //txtRejection.Attributes.Add("Readonly", "true");
                     BtnSubmit.Text = "Back";
                 }
                 if (value1.Trim() == "Submitted" || value1.Trim() == "Submit")
@@ -239,9 +245,6 @@ namespace CEIHaryana.TestReportModal
                     txtApprovalDate_SO.Text = ds.Tables[0].Rows[0]["ApprovalDate"].ToString();
 
                     SiteOwnerSummaryCard.Visible = true;
-
-                    // ⚠️ Ye session values BtnVerify_Click / BtnSubmit_Click me use hoti hain,
-                    // isliye inko yahan bhi set karna zaroori hai warna OTP / Submit flow tootega
                     Session["TestReportIds"] = lblReportNo_SO.Text.Trim();
                     Session["Contact"] = ds.Tables[0].Rows[0]["ContractorContactNo"].ToString();
                     Session["Email"] = ds.Tables[0].Rows[0]["ContractorEmail"].ToString();
@@ -262,7 +265,8 @@ namespace CEIHaryana.TestReportModal
                         individual.Visible = true;
                         agency.Visible = false;
                     }
-                    Session["InspectionType"] = ds.Tables[0].Rows[0]["InspectionType"].ToString();               
+                    Session["InspectionType"] = ds.Tables[0].Rows[0]["InspectionType"].ToString();  
+                    
                     txtSubmitteddate.Text = ds.Tables[0].Rows[0]["SubmittedDate"].ToString();
                     txtSubmittedBy.Text = ds.Tables[0].Rows[0]["ContractorWhoCreated"].ToString();
                     txtName.Text = ds.Tables[0].Rows[0]["NameOfOwner"].ToString();
@@ -704,6 +708,7 @@ namespace CEIHaryana.TestReportModal
             }
             catch
             {
+
             }
         }
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
