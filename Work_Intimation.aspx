@@ -330,9 +330,9 @@
             .close:hover {
                 color: red;
             }
-            span#closeModal {
-    text-align: end;
-}
+        span#closeModal {
+            text-align: end;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -751,6 +751,25 @@
                                                             </tr>
                                                         </div>
 
+                                                        <div runat="server" id="installationType4">
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="col-md-12">
+                                                                        <asp:TextBox class="form-control" ID="txtinstallationType4" Text="Switching Station" ReadOnly="true" onkeydown="return preventEnterSubmit(event)" placeholder="" autocomplete="off" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="col-md-12">
+                                                                        <asp:TextBox class="form-control" ID="txtinstallationNo4"  onkeydown="return preventEnterSubmit(event)" onKeyPress="return restrictInput(event)" placeholder="Max no. of Installations is 150." MaxLength="2" autocomplete="off" runat="server" Style="margin-left: 18px"></asp:TextBox>
+                                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator30" runat="server" ControlToValidate="txtinstallationNo4" ErrorMessage="RequiredFieldValidator" ValidationGroup="Submit" ForeColor="Red">Please Enter Number Of Installation</asp:RequiredFieldValidator>
+                                                                    </div>
+                                                                </td>
+                                                                <td style="text-align: center !important;">
+                                                                    <asp:ImageButton ID="ImageButton1" ImageUrl="/Image/Image/ImageToDelete-removebg-preview.png" Height="30" Width="30" OnClick="imgDelete4_Click" runat="server" /></td>
+                                                                </td>
+                                                            </tr>
+                                                        </div>
+
                                                         <%--    <div id="installationType4" runat="server" visible="False">
                                                             <tr>
                                                                 <td>
@@ -1023,7 +1042,7 @@
 
 
         <!-- Modal HTML alert added by Aslam 15-may-2025-->
-<div id="gurugramModal" class="modal" runat="server" ClientIDMode="Static">
+        <div id="gurugramModal" class="modal" runat="server" ClientIDMode="Static">
             <div class="modal-content">
                 <span class="close" id="closeModal">&times;</span>
                 <h3>Alert</h3>

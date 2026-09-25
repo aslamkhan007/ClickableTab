@@ -390,7 +390,7 @@ namespace CEIHaryana.Contractor
                 //Added By Aslam 22 apl 2025 to Remove industry if private and individual selection is done In Powerutility also remove
                 HideIndustry_PremisesOption();
             }
-            catch 
+            catch
             {
                 Session["ContractorID"] = "";
                 Response.Redirect("/ContractorLogout.aspx");
@@ -541,6 +541,7 @@ namespace CEIHaryana.Contractor
                 hiddenfield.Visible = false;
                 hiddenfield1.Visible = false;
                 txtEmail.Text = "";
+                txtinstallationType4.Text = ""; txtinstallationNo4.Text = "";
             }
             catch (Exception ex)
             {
@@ -570,7 +571,7 @@ namespace CEIHaryana.Contractor
                     statement.Visible = true;
                 }
             }
-            catch 
+            catch
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An Error Occured');", true);
             }
@@ -651,7 +652,7 @@ namespace CEIHaryana.Contractor
                     hiddenfield1.Visible = false;
                 }
             }
-            catch 
+            catch
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('An Error Occured');", true);
             }
@@ -999,7 +1000,7 @@ namespace CEIHaryana.Contractor
         {
             try
             {
-                if (installationType2.Visible == false && installationType3.Visible == false)
+                if (installationType2.Visible == false && installationType3.Visible == false && installationType4.Visible == false)
                 {
                     string script = "alert(\"You can't delete all rows.\");";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", script, true);
@@ -1026,7 +1027,7 @@ namespace CEIHaryana.Contractor
         {
             try
             {
-                if (installationType1.Visible == false && installationType3.Visible == false)
+                if (installationType1.Visible == false && installationType3.Visible == false && installationType4.Visible == false)
                 {
                     string script = "alert(\"You can't delete all rows.\");";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", script, true);
@@ -1053,7 +1054,7 @@ namespace CEIHaryana.Contractor
         {
             try
             {
-                if (installationType1.Visible == false && installationType2.Visible == false)
+                if (installationType1.Visible == false && installationType2.Visible == false && installationType4.Visible == false)
                 {
                     string script = "alert(\"You can't delete all rows.\");";
                     ScriptManager.RegisterStartupScript(this, GetType(), "showalert", script, true);
@@ -1082,13 +1083,16 @@ namespace CEIHaryana.Contractor
                     string ContID = Convert.ToString(Session["ContractorID"]);
 
                     installationType2.Visible = true;
+                    installationType4.Visible = true;
                     if (ddlVoltageLevel.SelectedValue == "upto 650 V")
                     {
                         installationType2.Visible = false;
+                        installationType4.Visible = false;
                     }
                     else
                     {
                         installationType2.Visible = true;
+                        installationType4.Visible = true;
                     }
                     GetGridData(ContID);
                 }
@@ -1542,7 +1546,9 @@ namespace CEIHaryana.Contractor
                        ddlInspectionType.SelectedValue.ToString(),
                        txtCapacity.Text.Trim(),
                        //UserId,
-                       transaction);
+                       transaction,
+                       txtinstallationType4.Text,
+                       txtinstallationNo4.Text);
 
 
                     TypeOfInspection = ddlInspectionType.SelectedValue.ToString();
@@ -1560,8 +1566,8 @@ namespace CEIHaryana.Contractor
                             }
                         }
 
-                        TextBox[] typeTextBoxes = { txtinstallationType1, txtinstallationType2, txtinstallationType3 };
-                        TextBox[] noTextBoxes = { txtinstallationNo1, txtinstallationNo2, txtinstallationNo3 };
+                        TextBox[] typeTextBoxes = { txtinstallationType1, txtinstallationType2, txtinstallationType3, txtinstallationType4 };
+                        TextBox[] noTextBoxes = { txtinstallationNo1, txtinstallationNo2, txtinstallationNo3, txtinstallationNo4 };
 
                         for (int i = 0; i < typeTextBoxes.Length; i++)
                         {
@@ -1619,6 +1625,33 @@ namespace CEIHaryana.Contractor
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowPopup",
                     "setTimeout(function() { document.getElementById('gurugramModal').style.display = 'block'; }, 100);", true);
+            }
+        }
+        protected void imgDelete4_Click(object sender, ImageClickEventArgs e)
+        {
+            try
+            {
+                if (installationType2.Visible == false && installationType3.Visible == false && installationType1.Visible == false)
+                {
+                    string script = "alert(\"You can't delete all rows.\");";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "showalert", script, true);
+                }
+                else
+                {
+                    string valueToAddBack = txtinstallationType1.Text;
+                    if (ddlWorkDetail.Items.FindByValue(valueToAddBack) == null)
+                    {
+                        ListItem newItem = new ListItem(valueToAddBack, valueToAddBack);
+                        ddlWorkDetail.Items.Add(newItem);
+                    }
+                    installationType4.Visible = false;
+                    txtinstallationType4.Text = string.Empty;
+                    txtinstallationNo4.Text = string.Empty;
+                }
+            }
+            catch
+            {
+                // Handle exceptions appropriately
             }
         }
     }
