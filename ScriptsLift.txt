@@ -1,0 +1,718 @@
+
+GO
+
+CREATE TABLE [dbo].[tbl_LiftAttachments](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[RegistrationNo] [nvarchar](100) NULL,
+	[InstallationType] [nvarchar](50) NOT NULL,
+	[DocumentID] [int] NOT NULL,
+	[DocumentName] [nvarchar](100) NOT NULL,
+	[FileName] [nvarchar](100) NOT NULL,
+	[DocumentPath] [nvarchar](500) NOT NULL,
+	[Status] [varchar](10) NULL,
+	[CreatedBy] [nvarchar](100) NOT NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [nvarchar](100) NULL,
+	[ModifiedDate] [datetime] NULL,
+	[TestReportId] [nvarchar](50) NULL,
+	[TypeOfInspection] [nvarchar](50) NULL,
+ CONSTRAINT [PK_tbl_LiftAttachments] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+go
+
+
+GO
+
+CREATE TABLE [dbo].[tbl_liftApproval_Inspections](
+	[SrNo] [int] IDENTITY(1,1) NOT NULL,
+	[InspectionId] [int] NOT NULL,
+	[Lift_Escelator_Id] [nvarchar](50) NULL,
+	[LiftSrNo] [nvarchar](100) NULL,
+	[TypeOfLift] [nvarchar](100) NULL,
+	[TypeOfControl] [nvarchar](150) NULL,
+	[Weight] [nvarchar](100) NULL,
+	[Capacity] [nvarchar](100) NULL,
+	[Make] [nvarchar](150) NULL,
+	[InstallationType] [nvarchar](50) NOT NULL,
+	[RegistrationSrNo] [int] NULL,
+	[RegistrationNo] [nvarchar](100) NOT NULL,
+	[ExpiryDate] [datetime] NULL,
+	[SignatureId] [int] NULL,
+	[Status] [int] NULL,
+	[InspectionType] [varchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[Current_ChallanDate] [datetime] NULL,
+	[Previous_ChallanDate] [datetime] NULL,
+	[ErectionDate] [datetime] NULL,
+	[SiteAddress] [nvarchar](150) NULL,
+	[Division] [varchar](50) NULL,
+	[ModifiedDate] [datetime] NULL,
+	[ModifiedBy] [nvarchar](50) NULL,
+	[RenewalDate] [datetime] NULL,
+	[District] [nvarchar](50) NULL,
+	[MemoNo] [nvarchar](100) NULL,
+	[InspectionStatus] [nvarchar](50) NULL,
+	[MemoDate] [datetime] NULL,
+	[TranscationId] [nvarchar](50) NULL,
+	[TranscationDate] [datetime] NULL,
+	[Amount] [nvarchar](50) NULL,
+	[Header1] [nvarchar](150) NULL,
+	[Header2] [nvarchar](150) NULL,
+	[Header3] [nvarchar](150) NULL,
+	[Header4] [nvarchar](150) NULL,
+	[Signature] [image] NULL,
+	[Stamp1] [nvarchar](50) NULL,
+	[Stamp2] [nvarchar](50) NULL,
+	[Stamp3] [nvarchar](50) NULL,
+	[Suggestion] [nvarchar](2000) NULL,
+	[TypeOfInspection] [nvarchar](100) NULL,
+	[InspectionCreatedDate] [datetime] NULL,
+	[ApprovedDate] [datetime] NULL,
+	[OwnerName] [nvarchar](100) NULL,
+	[MemoSrNew] [int] NULL,
+	[MemoSrPeriodic] [int] NULL,
+	[DairyNoNew] [int] NULL,
+	[DairyNoPeriodic] [int] NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+GO
+
+CREATE TABLE [dbo].[tbl_Inspection](
+	[Id] [int] IDENTITY(1000000,1) NOT NULL,
+	[TestRportId] [nvarchar](50) NULL,
+	[IntimationId] [nvarchar](50) NOT NULL,
+	[TestReportCount] [int] NULL,
+	[ApplicantType] [nvarchar](50) NOT NULL,
+	[InstallationType] [nvarchar](50) NOT NULL,
+	[VoltageLevel] [nvarchar](50) NULL,
+	[LineLength] [nvarchar](50) NULL,
+	[District] [nvarchar](50) NULL,
+	[Division] [nvarchar](50) NULL,
+	[AssignTo] [nvarchar](50) NULL,
+	[ServiceType] [int] NULL,
+	[PreviouslyAssigned1] [nvarchar](50) NULL,
+	[PreviouslyAssigned2] [nvarchar](50) NULL,
+	[ApplicationStatus] [nvarchar](10) NULL,
+	[AssignAdmin] [int] NULL,
+	[ReasonForRejection] [nvarchar](500) NULL,
+	[Suggestion] [nvarchar](2000) NULL,
+	[ReviwedDate] [date] NULL,
+	[PaymentMode] [varchar](10) NULL,
+	[FeesLeft] [int] NULL,
+	[FeesPaid] [nvarchar](10) NULL,
+	[MaxVoltage] [int] NULL,
+	[TotalCapacity] [decimal](18, 2) NULL,
+	[TotalAmount] [bigint] NULL,
+	[TransactionId] [nvarchar](50) NULL,
+	[TransctionDate] [datetime] NULL,
+	[ChallanAttachment] [nvarchar](200) NULL,
+	[Inspectiontype] [nvarchar](50) NULL,
+	[DateOfSubmission] [date] NULL,
+	[ContactNo] [nvarchar](10) NULL,
+	[Date] [date] NULL,
+	[ApprovedByAdmin] [nvarchar](10) NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[ModifiedBy] [nvarchar](50) NULL,
+	[ModiFiedDate] [datetime] NULL,
+	[Active] [int] NULL,
+	[AcceptedBy] [nvarchar](50) NULL,
+	[AcceptedDate] [datetime] NULL,
+	[ReturnBy] [nvarchar](50) NULL,
+	[ReturnDate] [datetime] NULL,
+	[ApprovedBy] [nvarchar](50) NULL,
+	[ApprovedDate] [datetime] NULL,
+	[RejectedBy] [nvarchar](50) NULL,
+	[RejectedDate] [datetime] NULL,
+	[SeriesNo] [int] NULL,
+	[MemoNo] [nvarchar](100) NULL,
+	[InspectionDate] [datetime] NULL,
+	[InspectionCount] [int] NULL,
+	[InspectionRemarks] [nvarchar](500) NULL,
+	[InspectionNewOrExist] [nvarchar](20) NULL,
+	[ApproximateYears] [int] NULL,
+	[SystemGenerated] [nvarchar](20) NULL,
+	[PreviousInspectionDate] [nvarchar](20) NULL,
+	[SactionVoltage] [nvarchar](50) NULL,
+	[DemandDocument] [nvarchar](500) NULL,
+	[TypeOfInspection] [nvarchar](50) NULL,
+	[CartId] [nvarchar](50) NULL,
+	[UserType] [varchar](50) NULL,
+	[SignatureId] [int] NULL,
+	[InspectionGeneratedId] [nvarchar](50) NULL,
+	[REInspectionGeneratedId] [nvarchar](50) NULL,
+	[RejctionReasonType] [nvarchar](50) NULL,
+	[ReturnedBasedOnDocuments] [nvarchar](50) NULL,
+	[ReturnedBasedOnDocumentValue] [int] NULL,
+	[ReasonForReturn] [nvarchar](500) NULL,
+	[TransferOrderId] [int] NULL,
+	[TransferOrderCount] [int] NULL,
+	[Notes] [nvarchar](700) NULL,
+	[ApprovalLiftRemarks] [nvarchar](500) NULL,
+	[MemoSrNew] [int] NULL,
+	[MemoSrPeriodic] [int] NULL,
+	[RejectionImage] [nvarchar](500) NULL,
+	[TypeOfRejection] [nvarchar](100) NULL,
+ CONSTRAINT [PK_tbl_Inspection] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+go
+
+
+GO
+
+CREATE TABLE [dbo].[tbl_LiftRenewal](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[InstallationType] [nvarchar](50) NULL,
+	[RegistrationNo] [nvarchar](100) NULL,
+	[InspectionID] [int] NULL,
+	[LastExpiryDate] [datetime] NULL,
+	[PreviousChallanUpload] [nvarchar](200) NULL,
+	[RenewalDate] [datetime] NULL,
+	[LastApprovalDate] [datetime] NULL,
+	[ErectionDate] [datetime] NULL,
+	[MemoNo] [nvarchar](100) NULL,
+	[MemoDate] [datetime] NULL,
+	[FirstExpiryDate] [datetime] NULL,
+	[Make] [nvarchar](150) NULL,
+	[SerialNo] [nvarchar](100) NULL,
+	[ApplicantDistrict] [nvarchar](50) NULL,
+	[TypeOfLift] [nvarchar](100) NULL,
+	[TypeOfControl] [nvarchar](150) NULL,
+	[Capacity] [nvarchar](100) NULL,
+	[Weight] [decimal](18, 2) NOT NULL,
+	[SiteAddress] [nvarchar](255) NULL,
+	[InspectionStatus] [int] NULL,
+	[InstallationTypeId] [int] NULL,
+	[Status] [int] NULL,
+	[InspectionCreatedDate] [datetime] NULL,
+	[InspectionCreatedBy] [nvarchar](50) NULL,
+	[CreatedDate] [datetime] NULL,
+	[CreatedBy] [nvarchar](50) NULL,
+	[ModifiedDate] [datetime] NULL,
+	[ModifiedBy] [nvarchar](50) NULL,
+	[TestReportID] [nvarchar](50) NULL,
+	[ApplicationStatus] [nvarchar](50) NULL,
+	[TestReportCount] [int] NULL,
+	[OldTestReportId] [nvarchar](50) NULL,
+	[Amount] [decimal](18, 2) NULL,
+	[lastDateOfPayment] [datetime] NULL,
+	[UserType] [varchar](10) NULL,
+ CONSTRAINT [PK_tbl_LiftRenewal] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+
+
+
+
+
+ALTER procedure [dbo].[sp_GetRenewalLiftDataGridOfAllRecords]
+(
+@Type nvarchar(50),
+@CreatedBy nvarchar(50)
+)
+As
+Begin
+SELECT Distinct
+       LAT.RegistrationNo,LAT.Make,LAT.LiftSrNo,LAT.TypeOfControl,LAT.Capacity,LAT.[Weight],LAT.Lift_Escelator_Id,
+	   LAT.TypeOfLift,LAT.InstallationType,LAT.ExpiryDate,LAT.Status,LAT.InspectionType,LAT.ErectionDate,
+	   LAT.Division,LAT.District,SiteAddress,
+	   LAT.CreatedDate AS LastApprovalDate,
+	   LAT.Current_ChallanDate 
+	   FROM tbl_liftApproval_Inspections AS LAT
+LEFT JOIN tbl_Inspection AS I ON I.ID = LAT.InspectionID
+Where  LAT.InstallationType=@Type AND  I.CreatedBy=@CreatedBy
+AND LAT.Status='1' 
+ AND LAT.CreatedDate = (
+          SELECT MAX(LAT2.CreatedDate)
+          FROM tbl_liftApproval_Inspections AS LAT2
+          WHERE LAT2.RegistrationNo = LAT.RegistrationNo
+      )
+ORDER BY LAT.CreatedDate DESC;
+End
+go
+
+GO
+
+
+--exec sp_GetPeriodicRenewalData 'Lift','C50291L15','ABSCS2229P' 
+ALTER procedure [dbo].[sp_GetPeriodicRenewalData]
+(
+@Type nvarchar(50),
+@RegistrationNo nvarchar(50),
+@CreatedBy nvarchar(50)
+)
+As
+Begin
+
+SELECT  Top(1) 
+       LAT.Make,LAT.LiftSrNo,LAT.TypeOfControl,LAT.Capacity,
+	   --LAT.[Weight],
+	   --Changed On 17 July because weight stored null TEC-00047 to resolve this 
+	   CASE 
+    WHEN (LAT.[Weight] IS NULL OR LTRIM(RTRIM(CAST(LAT.[Weight] AS NVARCHAR(50)))) = '')
+         AND TRY_CAST(LAT.Capacity AS DECIMAL(18,2)) <= 15
+    THEN TRY_CAST(LAT.Capacity AS DECIMAL(18,2)) * 68
+    ELSE LAT.[Weight]
+END AS [Weight],
+	   
+	   
+	   LAT.Lift_Escelator_Id,LAT.TypeOfLift,
+       LAT.InstallationType,LAT.RegistrationNo,
+	   LAT.ExpiryDate ,
+	   LAT.Status,LAT.InspectionType,
+	   LAT.ErectionDate AS ErectionDate,
+	   LAT.Division,LAT.District,LAT.SiteAddress,LAT.Amount,
+	   (Select Top(1) Current_ChallanDate From  tbl_liftApproval_Inspections
+        Where  RegistrationNo=LAT.RegistrationNo ) 
+		 AS LastTransactionDate,
+		 --LAT.Current_ChallanDate as LastPaymentDate, 
+		COALESCE(
+	   LAT.Current_ChallanDate ,(SELECT TOP 1 LR.LastDateOfPayment FROM tbl_Liftrenewal LR WHERE LR.RegistrationNo = LAT.RegistrationNo  AND LR.Status = '1' AND LR.APPLICATIONSTATUS = 'Approved'  ORDER BY LR.ID DESC))  as LastPaymentDate,
+	   LAT.CreatedDate AS LastApprovalDate,   
+	   LAT.MemoDate,LAT.MemoNo
+	   From tbl_liftApproval_Inspections AS LAT
+	   LEFT JOIN tbl_Inspection AS I ON I.ID = LAT.InspectionID
+Where  LAT.RegistrationNo = @RegistrationNo 
+AND LAT.InstallationType=@Type 
+AND Status='1'
+AND I.CreatedBy=@CreatedBy
+ORDER BY LAT.CreatedDate DESC
+End
+
+
+
+
+
+go
+
+ALTER Procedure [dbo].[sp_GetApplicantTypeForLift]    
+(    
+ @Id NVARCHAR(50) 
+)    
+As    
+Begin   
+SELECT ApplicantType , ApplicantTypeCode
+FROM tbl_RegistrationSiteOwner 
+WHERE UserID = @Id;
+End
+go
+---live check
+ALTER Procedure [dbo].[sp_GetDocumentsForLiftRenewal]        
+(          
+ @ApplicantType nvarchar(255),          
+ @InstallationTypeID int,          
+ @InspectionType nvarchar(255),
+ @InstallationType nvarchar(255)
+)          
+  As          
+  Begin
+  SELECT ROW_NUMBER() OVER (ORDER BY (SELECT 1 )) AS SNo, DocumentID, DocumentName, DocumentShortName, Req
+  From
+  (
+  SELECT DISTINCT a.DocumentID, a.DocumentName,          
+  REPLACE(a.DocumentShortName, '_', '') DocumentShortName,          
+  CASE WHEN a.DocumentID IN ( 14 ) THEN 0 ELSE 1 END AS Req         
+  FROM tbl_DocumentMaster AS a          
+  INNER JOIN tbl_DocumentCheckListMaster AS b ON a.DocumentID = b.DocumentID          
+  WHERE b.ApplicantTypeCode = @ApplicantType       
+  AND b.InstallationTypeID = @InstallationTypeID         
+  AND b.InspectionType = @InspectionType     
+  AND b.InstallationType = @InstallationType     
+  AND a.Status = 1) as T Order By DocumentShortName
+  End
+go
+=
+
+ALTER Procedure [dbo].[sp_InsertPeriodicLiftData]
+(
+    @InstallationType       nvarchar(50),
+    @RegistrationNo         nvarchar(100),
+    @LastExpiryDate         datetime,
+    @PreviousChallanUpload  nvarchar(200),
+    @lastDateOfPayment       datetime = NULL,
+    @ErectionDate           datetime,
+    @Make                   nvarchar(150),
+    @SerialNo               nvarchar(100),
+    @TypeOfLift             nvarchar(100),
+    @TypeOfControl          nvarchar(50),
+    @Capacity               nvarchar(100),
+    @Weight                 decimal(18, 2),
+    @ApplicantDistrict      nvarchar(50),
+    @MemoNo                 nvarchar(200),
+    @MemoDate               datetime,
+    @SiteAddress            nvarchar(255),
+    @CreatedBy              nvarchar(50),
+    @GeneratedTestReportID  varchar(50) OUTPUT
+)
+AS
+BEGIN
+    DECLARE @TReportID NVARCHAR(50);
+    SET @TReportID = 'PTL-' + RIGHT('00000' + CAST(ISNULL((SELECT MAX(CONVERT(BIGINT, ID)) FROM tbl_LiftRenewal), 0) + 1 AS NVARCHAR(50)), 5);
+
+	IF EXISTS (SELECT 1 FROM tbl_LiftRenewal WHERE RegistrationNo = @RegistrationNo AND Status = 1 AND ApplicationStatus = 'Pending')
+    BEGIN
+        RAISERROR('Your request with RegistrationNo is already in "Pending" status.', 16, 1, @RegistrationNo);
+        RETURN;
+    END
+	
+	DECLARE @RenewalDate DATETIME;
+	DECLARE @FirstExpiryDate DATETIME;
+	DECLARE @Amount decimal(18,2);
+
+Set @RenewalDate = DATEADD(DAY, 1, DATEADD(YEAR, -1, @LastExpiryDate));
+Set @FirstExpiryDate = DATEADD(DAY, 1, DATEADD(YEAR, 1, @MemoDate));
+
+	if @lastDateOfPayment = Null or @lastDateOfPayment=''
+	Begin
+	Set @lastDateOfPayment = null;
+		SET @Amount = 1000.00;
+	end
+	else
+	Begin
+
+	DECLARE @YearsDifference INT;
+	DECLARE @MonthsDifference INT;
+	DECLARE @DaysDifference INT;
+	DECLARE @ToCalculateDifference DATETIME;
+
+
+SELECT @ToCalculateDifference = DATEADD(year, DATEDIFF(year, @lastDateOfPayment, GETDATE()), @lastDateOfPayment)
+SELECT @YearsDifference = DATEDIFF(year, @lastDateOfPayment, GETDATE()) - (CASE WHEN @ToCalculateDifference > GETDATE() THEN 1 ELSE 0 END)
+
+SELECT @MonthsDifference = MONTH(GETDATE() - @ToCalculateDifference) - 1
+
+IF (@YearsDifference > 2)
+Begin
+    SET @Amount = 1000.00;
+End
+ELSE If(@YearsDifference = 2)
+Begin
+	If(@MonthsDifference >= 11)
+	Begin
+		SET @Amount = 1000.00;
+	End
+	Else
+	Begin
+		SET @Amount = 0.00;
+	End
+END
+ELSE
+BEGIN
+    SET @Amount = 0.00;
+END
+end
+	INSERT INTO tbl_LiftRenewal 
+				(
+					TestReportID,
+					InstallationType,
+					RegistrationNo,
+					LastExpiryDate,
+					PreviousChallanUpload,
+					lastDateOfPayment,
+					ErectionDate,
+					Make,
+					SerialNo,
+					TypeOfLift,
+					TypeOfControl,
+					Capacity,
+					Weight,
+					ApplicantDistrict,
+					MemoNo,
+					MemoDate,
+					SiteAddress,
+					CreatedDate,
+					CreatedBy,
+					Status,
+					ApplicationStatus,
+					Amount,
+					RenewalDate,
+					FirstExpiryDate
+				)   
+			VALUES
+				(
+					@TReportID,
+					@InstallationType,
+					@RegistrationNo,
+					@LastExpiryDate,
+					@PreviousChallanUpload,
+					@lastDateOfPayment,
+					@ErectionDate,
+					@Make,
+					@SerialNo,
+					@TypeOfLift,
+					@TypeOfControl,
+					@Capacity,
+					@Weight,
+					@ApplicantDistrict,
+					@MemoNo,
+					@MemoDate,
+					@SiteAddress,
+					GETDATE(),
+					@CreatedBy,
+					'1',
+					'Pending',
+					@Amount,
+					@RenewalDate,
+					@FirstExpiryDate
+				);   
+				
+				SET @GeneratedTestReportID = @TReportID;
+	END
+
+
+
+go
+
+
+GO
+
+ALTER PROCEDURE [dbo].[sp_InsertPeriodicReturnData]
+    (
+      @TestReportId NVARCHAR(50) ,
+      @InstallationType NVARCHAR(50) ,
+      @RegistrationNo NVARCHAR(100) ,
+      @LastExpiryDate DATETIME ,
+      @PreviousChallanUpload NVARCHAR(200) ,
+      @lastDateOfPayment DATETIME = NULL ,
+      @ErectionDate DATETIME ,
+      @Make NVARCHAR(150) ,
+      @SerialNo NVARCHAR(100) ,
+      @TypeOfLift NVARCHAR(100) ,
+      @TypeOfControl NVARCHAR(50) ,
+      @Capacity NVARCHAR(100) ,
+      @Weight DECIMAL(18, 2) ,
+      @ApplicantDistrict NVARCHAR(50) ,
+      @MemoNo NVARCHAR(200) ,
+      @MemoDate DATETIME ,
+      @SiteAddress NVARCHAR(255) ,
+      @InspectionId INT ,
+      @CreatedBy NVARCHAR(50)
+    )
+AS 
+    BEGIN
+
+        DECLARE @TReportID NVARCHAR(50) ;
+        SET @TReportID = 'PTL-' + RIGHT('00000'
+                                        + CAST(ISNULL(( SELECT
+                                                              MAX(CONVERT(BIGINT, ID))
+                                                        FROM  tbl_LiftRenewal
+                                                      ), 0) + 1 AS NVARCHAR(50)),
+                                        5) ;
+
+
+        UPDATE  [tbl_LiftRenewal]
+        SET     [Status] = 0
+        WHERE   [TestReportID] = @TestReportID ;
+
+	
+        DECLARE @RenewalDate DATETIME ;
+        DECLARE @FirstExpiryDate DATETIME ;
+        DECLARE @Amount DECIMAL(18, 2) ;
+
+        SET @RenewalDate = DATEADD(DAY, 1, DATEADD(YEAR, -1, @LastExpiryDate)) ;
+        SET @FirstExpiryDate = DATEADD(DAY, 1, DATEADD(YEAR, 1, @MemoDate)) ;
+
+        IF @lastDateOfPayment = NULL
+            OR @lastDateOfPayment = '' 
+            BEGIN
+                SET @lastDateOfPayment = NULL ;
+                SET @Amount = 1000.00 ;
+            END
+        ELSE 
+            BEGIN
+
+                DECLARE @YearsDifference INT ;
+                DECLARE @MonthsDifference INT ;
+                DECLARE @DaysDifference INT ;
+                DECLARE @ToCalculateDifference DATETIME ;
+
+--Changed On 13 mar 2026 To find payment requirement Calculation condition
+                --SELECT  @ToCalculateDifference = DATEADD(year,
+                --                                         DATEDIFF(year,
+                --                                              @RenewalDate,
+                --                                              GETDATE()),
+                --                                         @RenewalDate)
+                --SELECT  @YearsDifference = DATEDIFF(year, @RenewalDate,
+                --                                    GETDATE())
+                --        - ( CASE WHEN @ToCalculateDifference > GETDATE()
+                --                 THEN 1
+                --                 ELSE 0
+                --            END )
+
+                SELECT  @ToCalculateDifference = DATEADD(year,
+                                                         DATEDIFF(year,
+                                                              @lastDateOfPayment,
+                                                              GETDATE()),
+                                                         @lastDateOfPayment)
+                SELECT  @YearsDifference = DATEDIFF(year, @lastDateOfPayment,
+                                                    GETDATE())
+                        - ( CASE WHEN @ToCalculateDifference > GETDATE()
+                                 THEN 1
+                                 ELSE 0
+                            END )
+
+
+                SELECT  @MonthsDifference = MONTH(GETDATE()
+                                                  - @ToCalculateDifference)
+                        - 1
+
+                IF ( @YearsDifference > 2 ) 
+                    BEGIN
+                        SET @Amount = 1000.00 ;
+                    END
+                ELSE 
+                    IF ( @YearsDifference = 2 ) 
+                        BEGIN
+                            IF ( @MonthsDifference >= 11 ) 
+                                BEGIN
+                                    SET @Amount = 1000.00 ;
+                                END
+                            ELSE 
+                                BEGIN
+                                    SET @Amount = 0.00 ;
+                                END
+                        END
+                    ELSE 
+                        BEGIN
+                            SET @Amount = 0.00 ;
+                        END
+            END
+-- Insert a new record with Status = 1
+        INSERT  INTO tbl_LiftRenewal
+                ( TestReportID ,
+                  InstallationType ,
+                  RegistrationNo ,
+                  LastExpiryDate ,
+                  PreviousChallanUpload ,
+                  lastDateOfPayment ,
+                  ErectionDate ,
+                  Make ,
+                  SerialNo ,
+                  TypeOfLift ,
+                  TypeOfControl ,
+                  Capacity ,
+                  Weight ,
+                  ApplicantDistrict ,
+                  MemoNo ,
+                  MemoDate ,
+                  SiteAddress ,
+                  CreatedDate ,
+                  CreatedBy ,
+                  ModifiedBy ,
+                  ModifiedDate ,
+                  InspectionID ,
+                  Status ,
+                  ApplicationStatus ,
+                  OldTestReportId ,
+                  Amount ,
+                  RenewalDate ,
+                  FirstExpiryDate
+                )
+        VALUES  ( @TReportID ,
+                  @InstallationType ,
+                  @RegistrationNo ,
+                  @LastExpiryDate ,
+                  @PreviousChallanUpload ,
+                  @lastDateOfPayment ,
+                  @ErectionDate ,
+                  @Make ,
+                  @SerialNo ,
+                  @TypeOfLift ,
+                  @TypeOfControl ,
+                  @Capacity ,
+                  @Weight ,
+                  @ApplicantDistrict ,
+                  @MemoNo ,
+                  @MemoDate ,
+                  @SiteAddress ,
+                  GETDATE() ,
+                  @CreatedBy ,
+                  @CreatedBy ,
+                  GETDATE() ,
+					--Commented on instructions of aslam at 2-Jan-2026--@InspectionId,
+                  @InspectionId ,
+                  --NULL ,
+                  '1' ,
+                  'Pending' ,
+                  @TestReportId ,
+                  @Amount ,
+                  @RenewalDate ,
+                  @FirstExpiryDate
+				
+                )   
+        SELECT  @TReportID AS TestReportId
+    END
+
+
+go
+
+
+
+
+
+ALTER PROCEDURE [dbo].[sp_InsertLiftPeriodicAttachments]
+(
+     @TestReportId NVARCHAR(50) ,
+	@RegistrationNo NVARCHAR(200) ,
+	@InstallationType NVARCHAR(100) ,
+	@DocumentID INT ,
+	@DocSaveName NVARCHAR(200) ,
+	@FileName NVARCHAR(200) ,
+	@FilePath NVARCHAR(1000) ,
+	@CreatedBy NVARCHAR(200)
+)
+AS 
+  BEGIN 
+
+        INSERT INTO tbl_LiftAttachments
+                        ( 
+						  TestReportId,
+						  RegistrationNo ,
+                          InstallationType ,
+                          DocumentID ,
+                          DocumentName ,
+                          [fileName] ,
+                          DocumentPath ,
+                          CreatedDate ,
+                          CreatedBy ,
+                          [Status]
+                        )
+                VALUES  ( 
+				          @TestReportId,
+				          @RegistrationNo ,
+                          @InstallationType ,
+                          @DocumentID ,
+                          @DocSaveName ,
+                          @FileName ,
+                          @FilePath ,
+                          GETDATE() ,
+                          @CreatedBy ,
+                          '1'
+                        )
+            END
+
+
+
+go
